@@ -1,0 +1,28 @@
+{{define "login"}}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="styles.css"/>
+		<title>{{.Title}}</title>
+	</head>
+	<body>
+        <div class="login">
+          <div class="login-screen">
+            <div class="app-title">
+              <h1>{{.Title}}</h1>
+              <font color="red">{{.Coment}}</font><br>
+            </div>
+            <form action="" method="post">
+              ユーザ名:<input type="text" name="username"><br>
+              パスワード:<input type="password" name="password"><br>
+              {{if .Login}}<input type="submit" value="{{.Title}}" name="button"><br>{{end}}
+              {{if .Register1}}<input type="submit" value="Register" name="button"><br>{{end}}
+              {{if .Register2}}<input type="submit" value="Sign-up" name="button"><br>{{end}}
+        </form>
+          </div>
+        </div>
+      </body>
+	</body>
+</html>
+{{end}}
