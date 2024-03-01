@@ -19,7 +19,7 @@ func (ew *EventWatcher) Start() error {
 	return nil
 }
 
-//DB 追加処理.
+// DB 追加処理.
 func (ew *EventWatcher) AddCondition(ctx context.Context, c *Users) error {
 	const sqlStr = `INSERT INTO conditions(username, pass) VALUES (?,?);`
 	r, err := ew.db.ExecContext(ctx, sqlStr, c.Username, c.Pass)
@@ -34,7 +34,7 @@ func (ew *EventWatcher) AddCondition(ctx context.Context, c *Users) error {
 	return nil
 }
 
-//DB 初期化.
+// DB 初期化.
 func (ew *EventWatcher) InitDB(ctx context.Context) error {
 	const sqlStr = `CREATE TABLE IF NOT EXISTS conditions(
 		id	INTEGER PRIMARY KEY,
@@ -49,7 +49,7 @@ func (ew *EventWatcher) InitDB(ctx context.Context) error {
 	return nil
 }
 
-//接続処理.
+// 接続処理.
 func New(addr string) (*EventWatcher, error) {
 	mux := http.NewServeMux()
 	db, err := sql.Open(sqlite.DriverName, "user.db")
@@ -64,14 +64,14 @@ func New(addr string) (*EventWatcher, error) {
 	}, nil
 }
 
-//DB 取得処理.
+// DB 取得処理.
 func (ew *EventWatcher) Conditions(ctx context.Context, limit int) ([]*Users, error) {
 	const sqlStr = `SELECT id, username, pass FROM conditions LIMIT ?`
 	rows, err := ew.db.QueryContext(ctx, sqlStr, limit)
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close() 
+	defer rows.Close()
 
 	var cs []*Users
 	for rows.Next() {

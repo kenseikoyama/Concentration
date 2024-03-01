@@ -2,6 +2,7 @@ package server
 
 import (
 	"database/sql"
+	"embed"
 	"fmt"
 	"log"
 	"math/rand"
@@ -36,7 +37,9 @@ type Point struct {
 }
 
 var (
-	tmpl = template.Must(template.ParseGlob("server/web/*.html"))
+	//go:embed web/*.html
+	content embed.FS
+	tmpl    = template.Must(template.New("server").ParseFS(content,"web/*.html"))
 )
 
 func (ew *EventWatcher) HandleIndex(w http.ResponseWriter, r *http.Request) {
@@ -83,7 +86,7 @@ func (ew *EventWatcher) HandleIndex(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//ログイン処理.
+// ログイン処理.
 func (ew *EventWatcher) HandleLogin(w http.ResponseWriter, r *http.Request, data data) {
 	id := r.FormValue("username")
 	pass := r.FormValue("password")
@@ -107,7 +110,7 @@ func (ew *EventWatcher) HandleLogin(w http.ResponseWriter, r *http.Request, data
 	}
 }
 
-//登録画面を生成.
+// 登録画面を生成.
 func (ew *EventWatcher) HandleRegister(w http.ResponseWriter, data data) {
 	fmt.Println("Register")
 	data.Title = "Register"
@@ -120,7 +123,7 @@ func (ew *EventWatcher) HandleRegister(w http.ResponseWriter, data data) {
 	}
 }
 
-//登録処理.
+// 登録処理.
 func (ew *EventWatcher) HandleSignUp(w http.ResponseWriter, r *http.Request, data data) {
 	user := r.FormValue("username")
 	pass := r.FormValue("password")
@@ -184,13 +187,13 @@ func (ew *EventWatcher) HandleSignUp(w http.ResponseWriter, r *http.Request, dat
 	}
 }
 
-//ログイン後のゲーム画面生成.
+// ログイン後のゲーム画面生成.
 func GameHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("server/web/index.html"))
 	tmpl.Execute(w, nil)
 }
 
-//ランダムな座標を生成.
+// ランダムな座標を生成.
 func PointHandler(w http.ResponseWriter, r *http.Request) {
 	rand.Seed(time.Now().UnixNano())
 	p := Point{
@@ -200,13 +203,13 @@ func PointHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, `{"x": %d, "y": %d}`, p.X, p.Y)
 }
 
-//エラー処理.
+// エラー処理.
 func (ew *EventWatcher) error(w http.ResponseWriter, err error, code int) {
 	log.Println("Error:", err)
 	http.Error(w, http.StatusText(code), code)
 }
 
-//ハンドラの初期化.
+// ハンドラの初期化.
 func (ew *EventWatcher) InitHandlers() {
 	ew.mux.HandleFunc("/", ew.HandleIndex)
 	ew.mux.HandleFunc("/game", GameHandler)
