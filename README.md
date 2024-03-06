@@ -34,7 +34,7 @@ Server is running at http://localhost:8080
 
 ![alt text](image/image.png)
 
-3. 新規登録をしてからログインする
+3. 新規登録をしてからログインする(新規登録すると DB が作成されます)
 
 ![alt text](image/image-1.png)
 
