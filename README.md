@@ -12,22 +12,36 @@
 
 ## 目次
 
-1. [プロジェクトについて](#プロジェクトについて)
-2. [環境](#環境)
+1. [Concentration](#Concentration)
+2. [遊び方](#遊び方)
 
 <!-- プロジェクト名を記載 -->
 
 ## Concentration
 
-Web で遊べる神経衰弱
+Web(local) で遊べる神経衰弱
 
-<!-- プロジェクトについて -->
+## 遊び方
+1. main.go があるディレクトリで以下のコマンドを実行
 
-## プロジェクトについて
+```go
+go run .
+Server is running at http://localhost:8080
+```
+2. 上記のようにサーバーが立ち上がったらアクセス。
 
-React、DRF、Terraform を勉強する際に使用できるテンプレート
+![alt text](image.png)
 
-<!-- プロジェクトの概要を記載 -->
+3. 新規登録をしてからログインする
+
+![alt text](image-1.png)
+
+4. 上記の画面になったら space キーを押してゲーム開始
+
+![alt text](image-2.png)
+
+5. クリックでカードをめくりそろわなかった場合は space キーで裏返す
+
 
   <p align="left">
     <br />

@@ -43,7 +43,6 @@ var (
 )
 
 func (ew *EventWatcher) HandleIndex(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("HandleIndex")
 	cs, err := ew.Conditions(r.Context(), 10)
 	if err != nil {
 		ew.error(w, err, http.StatusInternalServerError)
@@ -51,7 +50,7 @@ func (ew *EventWatcher) HandleIndex(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := &data{
-		Title:      "Login",
+		Title:      "ログイン",
 		Login:      true,
 		Register1:  true,
 		Register2:  false,
@@ -63,13 +62,13 @@ func (ew *EventWatcher) HandleIndex(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("button:", button)
 
 		switch button {
-		case "Login":
+		case "ログイン":
 			ew.HandleLogin(w, r, *data)
 
-		case "Register":
+		case "新規登録":
 			ew.HandleRegister(w, *data)
 
-		case "Sign-up":
+		case "登録":
 			ew.HandleSignUp(w, r, *data)
 		default:
 
@@ -114,7 +113,7 @@ func (ew *EventWatcher) HandleLogin(w http.ResponseWriter, r *http.Request, data
 // 登録画面を生成.
 func (ew *EventWatcher) HandleRegister(w http.ResponseWriter, data data) {
 	fmt.Println("Register")
-	data.Title = "Register"
+	data.Title = "新規登録"
 	data.Login = false
 	data.Register1 = false
 	data.Register2 = true
@@ -131,7 +130,7 @@ func (ew *EventWatcher) HandleSignUp(w http.ResponseWriter, r *http.Request, dat
 
 	if user == "" {
 		fmt.Println("Register failed")
-		data.Title = "Register"
+		data.Title = "登録"
 		data.Coment = "ユーザーネームが指定されていません"
 		data.Login = false
 		data.Register1 = false
@@ -212,7 +211,7 @@ func (ew *EventWatcher) error(w http.ResponseWriter, err error, code int) {
 
 // ハンドラの初期化.
 func (ew *EventWatcher) InitHandlers() {
+	ew.mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("public"))))
 	ew.mux.HandleFunc("/", ew.HandleIndex)
 	ew.mux.HandleFunc("/game", GameHandler)
-	ew.mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("public"))))
 }
