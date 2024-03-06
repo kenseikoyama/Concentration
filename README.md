@@ -61,5 +61,5 @@ Server is running at http://localhost:8080
 <p align="right">(<a href="#top">トップへ</a>)</p>
 
 ## テスト
-handler_test.go はありますが現在開発中であり動きません。
+handler_test.go はありますが現在開発中であり、動作しません。
 
