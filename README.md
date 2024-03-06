@@ -14,6 +14,8 @@
 
 1. [Concentration](#Concentration)
 2. [遊び方](#遊び方)
+3. [環境](#環境)
+4. [テスト](#テスト)
 
 <!-- プロジェクト名を記載 -->
 
@@ -57,4 +59,7 @@ Server is running at http://localhost:8080
 
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
+
+## テスト
+handler_test.go はありますが現在開発中であり動きません。
 
