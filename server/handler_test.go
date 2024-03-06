@@ -1,6 +1,8 @@
 package server_test
 
 import (
+	"bytes"
+	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -9,14 +11,36 @@ import (
 	"kadai/server"
 )
 
+
 func Test_Handler(t *testing.T) {
-	w := httptest.NewRecorder()
+	url := "http://localhost:8080"
+	data := []byte(`{"username":"test","pass":"test"}`)
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Printf("request in test server. req: %+v", r)
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("hello in test server."))
+	}))
 	r := httptest.NewRequest(http.MethodGet, "/", nil)
-	ew, err := server.New(":8080")
+	w := httptest.NewRecorder()
+	ts.Config.Handler.ServeHTTP(w, r)
+	ew, err := server.New("localhost:8080")
 	if err != nil {
 		t.Fatal("予期せぬエラー:", err)
 	}
+
+	if err = ew.Start(); err != nil {
+		t.Fatal("予期せぬエラー:", err)
+	}
+
 	ew.HandleIndex(w, r)
+
+	resp, err := http.Post(url, "application/json", bytes.NewBuffer(data))
+	if err != nil {
+		panic(err)
+	}
+
+	defer resp.Body.Close()
+
 	res := w.Result()
 	t.Cleanup(func() {
 		res.Body.Close()
@@ -31,5 +55,9 @@ func Test_Handler(t *testing.T) {
 	}
 
 	// 改行区切り
-	t.Log(string(body))
+	expected := "Hello, World!\n"
+	if string(body) != expected {
+		t.Errorf("期待する内容: %s, 実際の内容: %s", expected, string(body))
+	}
+
 }

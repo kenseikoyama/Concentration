@@ -13,9 +13,11 @@ func (ew *EventWatcher) Start() error {
 		return err
 	}
 	ew.InitHandlers()
+
 	if err := ew.server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		return err
 	}
+
 	return nil
 }
 

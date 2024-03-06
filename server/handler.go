@@ -39,10 +39,11 @@ type Point struct {
 var (
 	//go:embed web/*.html
 	content embed.FS
-	tmpl    = template.Must(template.New("server").ParseFS(content,"web/*.html"))
+	tmpl    = template.Must(template.New("server").ParseFS(content, "web/*.html"))
 )
 
 func (ew *EventWatcher) HandleIndex(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("HandleIndex")
 	cs, err := ew.Conditions(r.Context(), 10)
 	if err != nil {
 		ew.error(w, err, http.StatusInternalServerError)
